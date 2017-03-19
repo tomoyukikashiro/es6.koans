@@ -7,7 +7,7 @@ chai.should();
 describe('Class in ES6', () => {
   describe('Like a function ...', () => {
     // Declare the Human class below that will satisfy all assertions
-    let Human;
+    let Human = class Human {}
     it('should be a function', () => {
 
       expect(Human).to.be.a('function');
@@ -31,23 +31,23 @@ describe('Class in ES6', () => {
       let actual = polyFunc.log();
 
       expect(actual).equal('H:3 & W:5');
-
       let polyClass;
 
       // Hint: the declaration position of PolygoneClass is not correct
       (() => {
-        polyClass = new PolygoneClass(3, 5);
+          class PolygoneClass {
+              constructor(height, width) {
+                  this.height = height;
+                  this.width = width;
+              }
+              log() {
+                  return `H:${this.height} & W:${this.width}`;
+              }
+          }
+
+          polyClass = new PolygoneClass(3, 5);
       }).should.not.throw(Error);
 
-      class PolygoneClass {
-        constructor(height, width) {
-          this.height = height;
-          this.width = width;
-        }
-        log() {
-          return `H:${this.height} & W:${this.width}`;
-        }
-      }
 
       actual = polyClass.log();
 
@@ -57,6 +57,20 @@ describe('Class in ES6', () => {
   });
   describe('Property ...', () => {
     // Declare and implement the Man class to satisfy all assertions below
+    function required() {
+       throw new Error();
+    }
+    class Man {
+      constructor({fullName = required()}) {
+        if (typeof fullName !== 'string') {
+          throw new Error();
+        }
+        this.fullName = fullName;
+      }
+      get name() {}
+      Walk() {}
+    }
+    Man.inject = [];
 
     it('should have a name property called Human', () => {
       expect(Man).has.property('name').equal('Man');

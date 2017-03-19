@@ -13,6 +13,7 @@ describe('iterator function', () => {
     it('Should have @@iterator( Symbol.iterator) property', () => {
       // Implement a iterable below to satisfy all assertions
       let iterable = {
+        test: function () {}
       };
 
       // We use the reflection API to get all proper keys
@@ -28,8 +29,16 @@ describe('iterator function', () => {
   describe('Iterator Protocol ...', () => {
     it('Should return an object that provides a next method/function', () => {
       // Implement a iterator below to satisfy all assertions
-      let iterator;
-
+      let iterator = function (list) {
+        let current = 0;
+        return {
+          next: function() {
+            return current < list.length ?
+                {value: list[current++], done: false} :
+                {value: undefined, done: true};
+          }
+        };
+      };
       expect(iterator([]))
         .to.be.an('object')
         .that.has.property('next')
@@ -64,6 +73,17 @@ describe('iterator function', () => {
           this.customers = customers;
         }
         // Create a function below to make this.customers iterable
+        [Symbol.iterator]() {
+          let current = 0;
+          let self = this;
+          return {
+            next() {
+              return current < self.customers.length ?
+                  {value: self.customers[current++], done: false} :
+                  {value: undefined, done: true};
+            }
+          };
+        }
       }
 
       it('Company should be iterable by customers', () => {
@@ -128,13 +148,16 @@ describe('iterator function', () => {
 
           return {
             [Symbol.iterator]() {
+              this.current = 0;
               return this;
             },
             next() {
-              // Implement the next function that will return the key and object value of the key
-              
+              let self = this;
+              return self.current < propKeys.length ?
+                  {value: [propKeys[self.current], obj[propKeys[self.current++]]], done: false} :
+                  {value: undefined, done: true};
             }
-          }
+          };
         }
 
         let jane = { first: 'Jane', last: 'Doe' };

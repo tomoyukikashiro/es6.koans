@@ -22,7 +22,9 @@ describe('Proxy', function() {
     // TODO Complete the handler of the Proxy below to prevent
     // any function execution (i.e. satisfy all the assertions below)
     const proxiedAdminActions = new Proxy(adminActions, {
-
+      get(){
+        return () => 'Access forbidden';
+      }
     });
 
     expect(proxiedAdminActions.openLock()).to.equal('Access forbidden');
@@ -44,7 +46,13 @@ describe('Proxy', function() {
     // of the following Proxy to make our dog more talkative
     // (i.e. satisfy all the assertions below)
     const talkativeDog = new Proxy(dog, {
-
+      get(target, prop){
+        if(!target[prop]) {
+          return () => 'Woof-woof';
+        }else{
+          return target[prop];
+        }
+      }
     });
 
     expect(talkativeDog.walk()).to.equal('Walking...');
@@ -63,6 +71,10 @@ describe('Proxy', function() {
     let numberOfAccess = 0;
     const loggedDatabaseAccess = new Proxy(accessDatabase, {
       // TODO Implement the handler of this proxy to satisfy the assertions.
+      apply() {
+        numberOfAccess++;
+        return Reflect.apply(...arguments);
+      }
     });
 
     loggedDatabaseAccess();
@@ -78,7 +90,25 @@ describe('Proxy', function() {
   it('my own test framework', function() {
     // Implement the spy function below to satisfy all the assertions.
     const spy = (someObject) => {
-
+      const calls = {};
+      return new Proxy(someObject, {
+        get(target, prop) {
+          if (prop === 'totalCalls') {
+            return calls;
+          }
+          if (typeof(target[prop]) === 'function'){
+            return new Proxy(target[prop], {
+              apply() {
+                calls[prop] = calls[prop] || 0;
+                calls[prop] += 1;
+                Reflect.apply(...arguments);
+              }
+            })
+          } else {
+            return target[prop];
+          }
+        }
+      });
     };
 
     class Snake {

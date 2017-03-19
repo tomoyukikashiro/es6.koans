@@ -18,6 +18,7 @@ describe('ES6 Collections', () => {
 
     it('Setting keys in a Map', function() {
       // TODO Add some code above to satisfy all the assertions below.
+      amap.set('key', 'value');
       expect(amap.size).to.equal(1);
       expect(amap.has('key')).to.be.true;
       expect(amap.get('key')).to.equal('value');
@@ -29,6 +30,9 @@ describe('ES6 Collections', () => {
       amap.set('age', 42);
       // TODO Use the forEach loop to satisfy the assertion below
       let actual = '';
+      amap.forEach((value, key) => {
+        actual += `(${key}:${value})`;
+      });
 
       expect(actual).to.equal('(firstname:John)(lastname:Doe)(age:42)');
     });
@@ -37,6 +41,7 @@ describe('ES6 Collections', () => {
       Array(500).fill().map((_,i) => amap.set('key' + i, 'value'+i));
 
       // TODO Add some code here to satisfy the assertion below.
+      amap.clear();
 
       expect(amap.size).to.equal(0);
     });
@@ -45,6 +50,7 @@ describe('ES6 Collections', () => {
       Array(500).fill().map((_,i) => amap.set('key' + i, 'value'+i));
 
       // TODO Now try to achieve the same without using the clear function.
+      amap.forEach((v, k) => amap.delete(k));
 
       expect(amap.size).to.equal(0);
     });
@@ -59,6 +65,7 @@ describe('ES6 Collections', () => {
       const myset = new Set();
 
       // TODO Add some code below to satisfy the assertions
+      myset.add('apple');
 
       expect(myset.size).to.equal(1);
       expect(myset.has('apple')).to.be.true;
@@ -70,7 +77,7 @@ describe('ES6 Collections', () => {
       myset.add('one');
       myset.add('one');
       // TODO What is the size of the Set?
-      const expected = CHANGE_ME;
+      const expected = 1;
 
       expect(myset.size).to.equal(expected);
     });
