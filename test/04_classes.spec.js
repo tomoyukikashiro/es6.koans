@@ -6,18 +6,15 @@ chai.should();
 
 describe('Class in ES6', () => {
   describe('Like a function ...', () => {
-    // Declare the Human class below that will satisfy all assertions
-    let Human;
+    // TODO Declare the Human class below that will satisfy all assertions
+    let Human = class {
+    }
     it('should be a function', () => {
 
       expect(Human).to.be.a('function');
     });
     it('should not be hoisted like function', () => {
       let polyFunc;
-
-      (() => {
-        polyFunc = new PolygoneFunc(3, 5);
-      }).should.not.throw(Error);
 
       function PolygoneFunc(height, width) {
         this.height = height;
@@ -28,6 +25,11 @@ describe('Class in ES6', () => {
         };
       }
 
+      (() => {
+        polyFunc = new PolygoneFunc(3, 5);
+      }).should.not.throw(Error);
+
+
       let actual = polyFunc.log();
 
       expect(actual).equal('H:3 & W:5');
@@ -35,10 +37,6 @@ describe('Class in ES6', () => {
       let polyClass;
 
       // Hint: the declaration position of PolygoneClass is not correct
-      (() => {
-        polyClass = new PolygoneClass(3, 5);
-      }).should.not.throw(Error);
-
       class PolygoneClass {
         constructor(height, width) {
           this.height = height;
@@ -48,6 +46,10 @@ describe('Class in ES6', () => {
           return `H:${this.height} & W:${this.width}`;
         }
       }
+      (() => {
+        polyClass = new PolygoneClass(3, 5);
+      }).should.not.throw(Error);
+
 
       actual = polyClass.log();
 
@@ -56,9 +58,22 @@ describe('Class in ES6', () => {
     });
   });
   describe('Property ...', () => {
-    // Declare and implement the Man class to satisfy all assertions below
+    // TODO Declare and implement the Man class to satisfy all assertions below
+    class Man {
+      constructor({fullName}={}) {
+        if (!fullName || typeof fullName !== 'string') {
+          throw new Error();
+        }
+        this.fullName = fullName;
+      }
+      static get inject(){
+        return [];
+      }
+      Walk() {}
+    }
 
     it('should have a name property called Human', () => {
+      // Class should have name prop by default
       expect(Man).has.property('name').equal('Man');
     });
 

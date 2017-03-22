@@ -14,7 +14,7 @@ describe('var, let, const', () => {
     it('what do you expect???', () => {
       const actual = iterator(false);
 
-      expect(actual).equal(__);
+      expect(actual).equal(undefined);
     });
   });
 
@@ -43,7 +43,7 @@ describe('var, let, const', () => {
 
     it('what do you expect???', () => {
       // TODO: uncomment this line below to see what happens when you change var to const
-      //console.log(iterator());
+      // console.log(iterator(false));
     });
   });
 });

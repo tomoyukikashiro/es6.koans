@@ -13,6 +13,8 @@ describe('iterator function', () => {
     it('Should have @@iterator( Symbol.iterator) property', () => {
       // Implement a iterable below to satisfy all assertions
       let iterable = {
+        [Symbol.iterator]: function () {
+        }
       };
 
       // We use the reflection API to get all proper keys
@@ -28,7 +30,16 @@ describe('iterator function', () => {
   describe('Iterator Protocol ...', () => {
     it('Should return an object that provides a next method/function', () => {
       // Implement a iterator below to satisfy all assertions
-      let iterator;
+      let iterator = function (list) {
+        let count = 0;
+        return {
+          next() {
+            return count < list.length ?
+                {value: list[count++], done: false} :
+                {value: undefined, done: true};
+          }
+        };
+      };
 
       expect(iterator([]))
         .to.be.an('object')
