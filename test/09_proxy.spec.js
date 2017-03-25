@@ -22,6 +22,11 @@ describe('Proxy', function() {
     // TODO Complete the handler of the Proxy below to prevent
     // any function execution (i.e. satisfy all the assertions below)
     const proxiedAdminActions = new Proxy(adminActions, {
+      get() {
+        return function() {
+          return 'Access forbidden';
+        };
+      }
 
     });
 
@@ -44,7 +49,14 @@ describe('Proxy', function() {
     // of the following Proxy to make our dog more talkative
     // (i.e. satisfy all the assertions below)
     const talkativeDog = new Proxy(dog, {
-
+      get(t, p) {
+        if (t[p]) {
+          return t[p];
+        }
+        return function() {
+          return 'Woof-woof';
+        };
+      }
     });
 
     expect(talkativeDog.walk()).to.equal('Walking...');
@@ -78,7 +90,20 @@ describe('Proxy', function() {
   it('my own test framework', function() {
     // Implement the spy function below to satisfy all the assertions.
     const spy = (someObject) => {
-
+      let count = {};
+      return new Proxy(someObject, {
+        get(t, p) {
+          if (p === 'totalCalls') {
+            return count;
+          }
+          return new Proxy(t[p], {
+            apply() {
+              count[p] = count[p] === undefined ? 1 : ++count[p];
+              return Reflect.apply(...arguments);
+            }
+          });
+        }
+      });
     };
 
     class Snake {

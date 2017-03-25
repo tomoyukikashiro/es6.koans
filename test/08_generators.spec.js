@@ -18,6 +18,11 @@ describe('Generators', () => {
 
     it('Via function declaration', () => {
       // Declare and Implement the generator function foo that will satisfy all assertions
+      function* foo() {
+        yield 'a';
+        yield 1;
+        yield 'c';
+      }
 
       const actual = getGeneratorResultInArray(foo);
       expect(actual).deep.equal(['a', 1, 'c']);
@@ -26,7 +31,11 @@ describe('Generators', () => {
 
     it('Via function expression', () => {
       // Declare and Implement the generator function foo that will satisfy all assertions
-      let foo;
+      let foo = function* () {
+        yield 'd';
+        yield 1;
+        yield 'lol';
+      };
 
       const actual = getGeneratorResultInArray(foo);
       expect(actual).deep.equal(['d', 1, 'lol']);
@@ -35,6 +44,11 @@ describe('Generators', () => {
     it('Via a method definition in an object literal', () => {
       let obj = {
         // Declare and Implement the generator function foo that will satisfy all assertions
+        *foo() {
+          yield 'daddy';
+          yield 1000;
+          yield -100;
+        }
       };
 
       const actual = getGeneratorResultInArray(obj.foo);
@@ -44,6 +58,11 @@ describe('Generators', () => {
     it('Via a method definition in a class definition', () => {
       class Bar {
         // Declare and Implement the generator function foo that will satisfy all assertions
+        *foo() {
+          yield 'Mu';
+          yield 1000;
+          yield {name: 'Hackages'};
+        }
       }
 
       const actual = getGeneratorResultInArray(new Bar().foo);
@@ -73,7 +92,7 @@ describe('Generators', () => {
         yield 'x';
         yield 'y';
         // Call correctly child
-
+        yield* child();
       }
 
       const actual = getGeneratorResultInArray(parent);
@@ -88,7 +107,10 @@ describe('Generators', () => {
 
         function* naturalNumbers() {
           // Implement the generator function that will return the next natural numbers
-    
+          let count = 0;
+          while(true) {
+            yield count++;
+          }
         }
         const iterator = naturalNumbers();
 
@@ -111,7 +133,10 @@ describe('Generators', () => {
         function* objectEntries(obj) {
           let propKeys = Reflect.ownKeys(obj);
           // Implement the generator function that will return the key and object value of the key
-
+          while (propKeys.length) {
+            let key = propKeys.shift();
+            yield [key, obj[key]];
+          }
         }
         let jane = { first: 'Jane', last: 'Doe' };
         const actual = [];
@@ -126,7 +151,10 @@ describe('Generators', () => {
         function* take(n, iterable) {
           // Implement the generator function that will return the n first value
           for (let value of iterable) {
-
+            if(n) {
+              yield value;
+              n--;
+            }
           }
         }
         const actual = [];

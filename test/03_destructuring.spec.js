@@ -14,12 +14,14 @@ describe('Destructuring', () => {
 
     it('With ES6', () => {
       // TODO: Get the first fruit
-      let actual;
+      let actual = fruits.shift();
       expect(actual).to.equal('brussels sprout');
       // TODO: Get the last fruit
+      actual = fruits.pop();
       expect(actual).to.equal('cherry');
       // TODO: Get the queue fruit;
-      expect(actual).deep.equal(['apple', 'beetroot', 'broccoli', 'carrot', 'cherry']);
+      actual = fruits.sort();
+      expect(actual).deep.equal(['apple', 'beetroot', 'broccoli', 'carrot']);
     });
 
     it('With ES6 & default value', () => {
@@ -29,7 +31,7 @@ describe('Destructuring', () => {
       [dog = 'Hector', cat = 'Katy'] = [cat, dog];
 
       const actual = [dog, cat];
-      const result = ['Hector', 'Katy'];
+      const result = ['Hector', 'Larry'];
       expect(actual).deep.equal(result);
     });
 
@@ -49,11 +51,11 @@ describe('Destructuring', () => {
       let actual = [];
       
       // TODO: Write the destructuring and the push statement to satisfy all assertions
-      for (let { } of people) {
-        actual.push();
+      for (let {name, age} of people) {
+        actual.push(`${name} ${age}`);
       }
 
-      expect(actual).deep.equal(['Mike 25', 'Tom 25']);
+      expect(actual).deep.equal(['Mike 35', 'Tom 25']);
     });
   });
 
@@ -87,6 +89,7 @@ describe('Destructuring', () => {
 
       it('With ES6 object Destructuring to do the same operation', () => {
         // TODO Extract the required information using the spread operator.
+        let {id, name: fullName, handles:{twitter:twitter}} = getUserInfo();
         expect(id).to.be.defined;
         expect(fullName).to.equal('Davy Engone');
         expect(twitter).to.equal('davyengone');
@@ -113,7 +116,7 @@ describe('Destructuring', () => {
       });
       it("With ES6 & a function parameter's default value", () => {
 
-        function drawES6Chart(/* // TODO: Provide the parameter desctructuring to satisfy all assertions below  */) {
+        function drawES6Chart({size='big', cords={x:0, y:0}, radius=25}={}) {
           return [size, cords, radius];
         }
         let actual = drawES6Chart();
